@@ -8,14 +8,15 @@ const Home = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          marginBottom:"3%"
         }}
       >
         <div>
           <h1> Islamic University of Technology </h1>
-          <h3>Department of Computer Science</h3>
+          <h3 style={{paddingLeft:"12%"}}>Department of Computer Science</h3>
         </div>
       </div>
-      <form>
+      <form style={{ float: "right", width: "30%", marginBottom:"3%" }}>
         <label>
           Student ID:
           <input type="text" name="name" />
