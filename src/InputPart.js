@@ -5,8 +5,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const InputPart = () => {
   const rules = [
-    { id: 1, title: "Hello World" },
-    { id: 2, title: "Installation" },
+    { id: 0, title: "Hello World" },
+    { id: 1, title: "Installation" },
+    { id: 2, title: "Development" },
+    { id: 3, title: "Others" },
   ];
   let arr = new Array(rules.length);
   const [difficulty, setDifficulty] = useState();
@@ -19,9 +21,10 @@ const InputPart = () => {
     }
   };
 
-  // useEffect(() => {
-  //   setCheckedState(arr.fill(false));
-  // }, difficulty);
+  useEffect(() => {
+    console.log(difficulty);
+    setCheckedState(arr.fill(false));
+  },[difficulty]);
 
   const [checkedState, setCheckedState] = useState(arr.fill(false));
 
