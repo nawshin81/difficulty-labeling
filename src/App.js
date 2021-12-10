@@ -1,17 +1,17 @@
-import React from 'react';
-import './App.css';
-import Home from './Home';
-import Rules from './Rules';
-import InputPart from './InputPart';
-
+import React from "react";
+import Home from "./Home";
+import Labelpage from "./Labelpage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   return (
     <div>
-      <Home/>
-      <Rules/>
-      <InputPart/>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home/>} />
+          <Route path="/Labelpage" element={<Labelpage/>} />
+        </Routes>
+      </BrowserRouter>
     </div>
-          
   );
 }
 

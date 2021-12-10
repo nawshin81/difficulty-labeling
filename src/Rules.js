@@ -11,7 +11,6 @@ const Rules = () => {
           textDecorationLine: "underline",
           marginTop: "3%",
           marginBottom:"3%",
-          marginLeft:"30%"
         }}
       >
         Rules for reading
