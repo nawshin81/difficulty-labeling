@@ -24,6 +24,7 @@ app.get("/", (req, res) => {
 });
 
 require("./src/routes/so_question.routes")(app);
+require("./src/routes/so_label.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

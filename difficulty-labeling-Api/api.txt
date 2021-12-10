@@ -1,0 +1,2 @@
+all post         get /api/questions
+insert label     post /api/label
