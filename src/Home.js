@@ -1,13 +1,21 @@
 import React from "react";
-import { Outlet, Link } from "react-router-dom";
+import { useState} from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "./IUT.png";
 
 const Home = () => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('label');
-    <Link to="/Labelpage" />;
-  };
+  const [input, setInput] = useState('');
+  
+  const navigate = useNavigate();
+
+  const routeChange = () => {
+    if(input.length===9){
+      let path = "/labelpage";
+      navigate(path);
+    }else{
+      alert("Please enter a valid Student Id")
+    } 
+  }
 
   return (
     <div>
@@ -43,14 +51,17 @@ const Home = () => {
           width: "100%",
           marginBottom: "3%",
         }}
-        onClick={handleSubmit}
       >
         <label>
           Student ID:
-          <input type="text" name="id" />
+          <input type="text" name="id" value={input} onInput={e => setInput(e.target.value)}/>
         </label>
+        <button color="primary" className="px-4"
+          onClick={routeChange}
+        >
+          Next
+        </button>
       </form>
-      <Outlet/>
     </div>
   );
 };
