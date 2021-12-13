@@ -1,8 +1,11 @@
 import React from "react";
 
-const Rules = () => {
+const Rules = (props) => {
+
+  const rules=props.rules;
+
   return (
-    <div>
+    <div className="w-100">
       <h2
         style={{
           display: "flex",
@@ -11,75 +14,38 @@ const Rules = () => {
           textDecorationLine: "underline",
           marginTop: "3%",
           marginBottom:"3%",
-          marginLeft:"30%"
         }}
       >
         Rules for reading
       </h2>
-      <div style={{ width: "90%", paddingLeft: "5%" }}>
-        <div style={{ float: "left", width: "33%", backgroundColor: "azure" }}>
-          <h4 style={{ paddingLeft: "5%", paddingRight: "3%" }}>Basic</h4>
-          <p style={{ paddingLeft: "5%", paddingRight: "3%" }}>
-            1.Rules rules rules rules rules rules rules rules rules rules rules
-            rules rules rules rules.
-            <br />
-            2.Rules rules rules rules rules rules rules rules rules rules.
-            <br />
-            3.Rules rules rules rules rules rules rules rules rules rules rules
-            rules rules.
-            <br />
-            4.Rules rules rules rules rules rules rules rules rules.
-            <br />
-            5.Rules rules rules rules rules rules rules rules rules rules rules
-            rules rules rules.
-            <br />
-            6.Rules rules rules rules rules rules rules.
-            <br />
-          </p>
+      <div> 
+
+        <div style={{ float: "left", width: "33%", height:450, backgroundColor: "#abe2c7" }}>
+          <h4 className="d-flex justify-content-center pt-3">{rules[0].title}</h4>
+          {rules[0].item.map(({ item_id, item_title }, index) => {
+              return (
+          <p style={{ paddingLeft: "5%", paddingRight: "5%" }}>{item_id+1}. {item_title}</p>
+            );
+            })}
         </div>
-        <div style={{ float: "left", width: "33%", backgroundColor: "azure" }}>
-          <h4 style={{ paddingLeft: "2%", paddingRight: "3%" }}>
-            Intermediate
-          </h4>
-          <p style={{ paddingLeft: "2%", paddingRight: "3%" }}>
-            1.Rules rules rules rules rules rules rules rules rules rules rules
-            rules rules rules rules.
-            <br />
-            2.Rules rules rules rules rules rules rules rules rules rules.
-            <br />
-            3.Rules rules rules rules rules rules rules rules rules rules rules
-            rules rules.
-            <br />
-            4.Rules rules rules rules rules rules rules rules rules.
-            <br />
-            5.Rules rules rules rules rules rules rules rules rules rules rules
-            rules rules rules.
-            <br />
-            6.Rules rules rules rules rules rules rules.
-            <br />
-          </p>
+
+        <div style={{ float: "left", width: "33%", height:450, backgroundColor: "#d6fadf" }}>
+          <h4 className="d-flex justify-content-center pt-3">{rules[1].title}</h4>
+          {rules[1].item.map(({ item_id, item_title }, index) => {
+              return (
+          <p style={{ paddingLeft: "5%", paddingRight: "5%" }}>{item_id+1}. {item_title}</p>
+            );
+            })}
         </div>
-        <div style={{ float: "left", width: "33%", backgroundColor: "azure" }}>
-          <h4 style={{ paddingLeft: "2%", paddingRight: "5%" }}>Advanced</h4>
-          <p style={{ paddingLeft: "2%", paddingRight: "5%" }}>
-            1.Rules rules rules rules rules rules rules rules rules rules rules
-            rules rules rules rules.
-            <br />
-            2.Rules rules rules rules rules rules rules rules rules rules.
-            <br />
-            3.Rules rules rules rules rules rules rules rules rules rules rules
-            rules rules.
-            <br />
-            4.Rules rules rules rules rules rules rules rules rules.
-            <br />
-            5.Rules rules rules rules rules rules rules rules rules rules rules
-            rules rules rules.
-            <br />
-            6.Rules rules rules rules rules rules rules.
-            <br />
-          </p>
+
+        <div style={{ float: "left", width: "33%",height:450, backgroundColor: "#91c9d6" }}>
+          <h4 className="d-flex justify-content-center pt-3">{rules[2].title}</h4>
+          {rules[2].item.map(({ item_id, item_title }, index) => {
+              return (
+          <p style={{ paddingLeft: "5%", paddingRight: "5%" }}>{item_id+1}. {item_title}</p>
+            );
+            })}
         </div>
-        <br style={{ clear: "left" }} />
       </div>
     </div>
   );

@@ -1,55 +1,100 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const InputPart = () => {
-  const rules = [
-    { id: 1, title: "Hello World" },
-    { id: 2, title: "Installation" },
-  ];
-  let arr = new Array(rules.length);
-  const [difficulty, setDifficulty] = useState();
+const InputPart = (props) => {
+
+  const rules=props.rules;
+
+  const navigate = useNavigate();
+
   const [collapse, setCollapse] = useState(true);
+  const [difficultywiserule, setDifficultywiserule]= useState({});
+  const [rule_arr, setRules_arr] = useState([]);
+
+
+
+  const [difficulty, setDifficulty] = useState();
+
   const handleChange = (e) => {
     const target = e.target;
     if (target.checked) {
       setDifficulty(target.value);
+      if (target.value===rules[0].title){
+        setDifficultywiserule(rules[0].item)
+        setRules_arr(new Array(rules[0].item.length))
+      }else if(target.value===rules[1].title){
+        setDifficultywiserule(rules[1].item)
+        setRules_arr(new Array(rules[1].item.length))
+      }else {
+        setDifficultywiserule(rules[2].item)
+        setRules_arr(new Array(rules[2].item.length))
+      }
       setCollapse(false);
     }
   };
 
-  // useEffect(() => {
-  //   setCheckedState(arr.fill(false));
-  // }, difficulty);
 
-  const [checkedState, setCheckedState] = useState(arr.fill(false));
+
+  const [checkedRules, setcheckedRules] = useState(rule_arr.fill(false));
 
   const handleOnChange = (position) => {
-    const updatedCheckedState = checkedState.map((item, index) =>
+    const updatedcheckedRules = checkedRules.map((item, index) =>
       index === position ? !item : item
     );
 
-    setCheckedState(updatedCheckedState);
+    setcheckedRules(updatedcheckedRules);
   };
 
+
+
+  const [comment, setComment] = useState('');
+
+
+  useEffect(() => {
+    console.log(difficulty);
+    setcheckedRules(rule_arr.fill(false));
+  }, [difficulty]);
+
+
+  const save_and_next = () => {
+    if (difficulty != '') {
+      alert(difficulty + "----" + checkedRules + "\n" + comment)
+    } else {
+      alert("Please enter a valid Student Id")
+    }
+  }
+
+
+  const save_and_close = () => {
+    if (difficulty != '') {
+      let path = "/";
+      navigate(path);
+    } else {
+      alert("Please enter a valid Student Id")
+    }
+  }
+
   return (
-    <div style={{ paddingTop: "5%" }}>
+    <div className="w-100 ">
       <h2
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           textDecorationLine: "underline",
-          marginBottom:"3%"
+          marginBottom: "3%"
         }}
       >
         Data Labeling Portion
       </h2>
-      <div style={{ width: "90%", paddingLeft: "10%" }}>
-        <div style={{ float: "left", width: "50%",backgroundColor:"azure" }}>
-          <h4>Post</h4>
-          <p>
+      <div style={{ backgroundColor: "#f8f1f4", minHeight: 570 }}>
+        <div style={{ float: "left", width: "50%", minHeight: 570, backgroundColor: "#eadcd9" }}>
+          <h4 className="d-flex justify-content-center pt-3">Post</h4>
+          <p className="d-flex justify-content-center">Post Id:</p>
+          <p style={{ paddingLeft: "5%", paddingRight: "3%" }}>
             How to make a Python class serializable?
             <br />
             A simple class:
@@ -73,22 +118,26 @@ const InputPart = () => {
             Without the error
           </p>
         </div>
-        
-        <div style={{ float: "right", width: "50%",backgroundColor:"azure"  }}>
-          <h4>Select Difficulty label</h4>
+
+        <div style={{ float: "right", width: "50%" }}>
+          <h4 className="d-flex justify-content-center pt-3">Select Difficulty label</h4>
           <Form>
-            <div>
-              <label>
+            <div className="d-flex justify-content-center pt-3 w-100">
+            {rules.map(({ id, title }, index) => {
+              return (
+              <label className="px-3">
                 <input
                   type="radio"
-                  value="Basic"
-                  checked={difficulty === "Basic"}
+                  value={title}
+                  checked={difficulty === title}
                   onChange={handleChange}
                 />
-                <span>Basic</span>
+                <span>{title}</span>
               </label>
+              );
+            })}
 
-              <label>
+              {/* <label className="px-3">
                 <input
                   type="radio"
                   value="Intermediate"
@@ -98,7 +147,7 @@ const InputPart = () => {
                 <span>Intermediate</span>
               </label>
 
-              <label>
+              <label className="px-3">
                 <input
                   type="radio"
                   value="Advance"
@@ -106,64 +155,61 @@ const InputPart = () => {
                   onChange={handleChange}
                 />
                 <span>Advance</span>
-              </label>
+              </label> */}
             </div>
-            {collapse ? (
-              <></>
-            ) : (
-              <>
-                <h3>Select Rules</h3>
-                <ul>
-                  {rules.map(({ id, title }, index) => {
-                    return (
-                      <div key={index}>
-                        <input
-                          type="checkbox"
-                          id={id}
-                          name={title}
-                          value={title}
-                          checked={checkedState[id]}
-                          onChange={() => handleOnChange(id)}
-                        />
-                        <label htmlFor={`custom-checkbox-${id}`}>{title}</label>
-                      </div>
-                    );
-                  })}
-                </ul>
-              </>
-            )}
+            <div>
+
+              <h5 className="d-flex justify-content-center pt-3 w-100">Select Rules</h5>
+              <div className="d-flex justify-content-center pt-3 w-100" style={{minHeight:320}}>
+                {collapse ? (
+                  <></>
+                ) : (
+                  <ul>
+                    {difficultywiserule.map(({ item_id, item_title }, index) => {
+                      return (
+                        <div key={index}>
+                          <input
+                            type="checkbox"
+                            id={item_id}
+                            name={item_title}
+                            value={item_title}
+                            checked={checkedRules[item_id]}
+                            onChange={() => handleOnChange(item_id)}
+                          />
+                          <label htmlFor={`custom-checkbox-${item_id}`}>{item_title}</label>
+                        </div>
+                      );
+                    })}
+                  </ul>
+                )}
+              </div>
+            </div>
+            <form className="d-flex justify-content-center pt-3 w-100">
+              <textarea
+                value={comment}
+                rows="3"
+                placeholder="Write your comment here."
+                style={{ width: "90%" }}
+                onChange={e => setComment(e.target.value)}
+              />
+            </form>
           </Form>
         </div>
-        <br style={{ clear: "left" }} />
-      </div>
-      <div>
-        <form style={{ paddingLeft: "10%", paddingTop: "3%" }}>
-          <textarea
-            value=""
-            placeholder="Write your comment here."
-            style={{ width: "80%" }}
-          />
-        </form>
-      </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop:"4%",
-          marginBottom:"2%",
-        }}
-      >
-        <div style={{ float: "left", width: "23%" }}>
-          <Button variant="outline-primary">Previous</Button>
+      </div>
+      <div className="d-flex justify-content-center pb-5 w-100">
+
+        <div className="d-flex justify-content-center p-2"
+          style={{ backgroundColor: "#f8f1f4", width: "33.33%" }}
+        > <button type="button" class="btn btn-outline-warning waves-effect w-50" >Previous</button>
         </div>
-        <div style={{ float: "left", width: "23%" }}>
-          <Button variant="outline-primary">Save and Next</Button>
-        </div>
-        <div style={{ float: "left", width: "23%" }}>
-          <Button variant="outline-primary">Save and Close</Button>
-        </div>
+        <div className="d-flex justify-content-center p-2"
+          style={{ backgroundColor: "#ece6dd", width: "33.33%" }}
+        > <button type="button" class="btn btn-outline-warning waves-effect w-50" onClick={save_and_next}>Save and Next</button></div>
+        <div className="d-flex justify-content-center p-2"
+          style={{ backgroundColor: "#eadcd9", width: "33.33%" }}
+        > <button type="button" class="btn btn-outline-info waves-effect w-50" onClick={save_and_close}>Save and Close</button></div>
+
       </div>
     </div>
   );
