@@ -1,7 +1,9 @@
 const db = require("../models");
 const so_label = db.so_label;
+const so_question = db.so_question;
+const sequelize = db.sequelize;
 
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
 	// Validate request
 	if (!req.body.labeller && !req.body.qid && !req.body.label && !req.body.label_rule) {
 		res.status(400).send({
@@ -20,14 +22,27 @@ exports.create = (req, res) => {
 	};
 
 	// Save so_label in the database
-	so_label
-		.create(question_label)
-		.then((data) => {
-			res.send(data);
-		})
-		.catch((err) => {
-			res.status(500).send({
-				message: err.message || "Some error occurred while creating the so_label.",
+	return (result = await sequelize.transaction(async (t) => {
+		await so_label
+			.create(question_label)
+			.then(async (data) => {
+				console.log(data.dataValues.qid);
+				// res.status(200).send();
+				await so_question
+					.increment("total_labels", { by: 1, where: { id: data.dataValues.qid }, transaction: t, lock: t.LOCK.UPDATE, raw: true })
+					.then(() => {
+						res.status(200).send(data.dataValues);
+					})
+					.catch((err) => {
+						res.status(500).send({
+							message: err.message,
+						});
+					});
+			})
+			.catch((err) => {
+				res.status(500).send({
+					message: err.message || "Some error occurred while creating the so_label.",
+				});
 			});
-		});
+	}));
 };

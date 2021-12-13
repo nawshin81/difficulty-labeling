@@ -1,7 +1,8 @@
 const db = require("../models");
 const so_question = db.so_question;
-const so_question_labelled = db.so_question_labelled;
+// const so_question_labelled = db.so_question_labelled;
 const Sequelize = db.Sequelize;
+const sequelize = db.sequelize;
 const Op = Sequelize.Op;
 
 exports.findAll = (req, res) => {
@@ -21,45 +22,46 @@ exports.findAll = (req, res) => {
 		});
 };
 
-exports.findAnyNumber = (req, res) => {
-	const number = req.params.number;
-	so_question.hasOne(so_question_labelled, { foreignKey: "qid" });
-	so_question_labelled.belongsTo(so_question, { foreignKey: "qid" });
-	var allQuestion = [];
-	so_question
-		.findAll({
-			include: [
-				{
-					model: so_question_labelled,
-					where: {
-						total_labels: { [Op.lt]: 3 },
-					},
-					required: true,
-					raw: true,
+exports.findAnyNumber = async (req, res) => {
+	const number = Number(req.params.number);
+	return (result = await sequelize.transaction(async (t) => {
+		await so_question
+			.findAll({
+				where: {
+					total_labels: { [Op.lt]: 3 },
+					total_requests: { [Op.lt]: 3 },
 				},
-			],
-		})
-		.then((data) => {
-			
-			console.log(data[0].dataValues.so_question_labelled.dataValues);
-			res.status(200).send();
-		})
-		.catch((err) => {
-			res.status(500).send({
-				message: err.message || "Some error occurred while retrieving tutorials.",
+				raw: true,
+				transaction: t,
+				skipLocked: true,
+				lock: t.LOCK.UPDATE,
+				limit: number,
+			})
+			.then(async (data) => {
+				allIDs = data.map((item) => item.id);
+				allQuestionData = data.map((item) => {
+					return {
+						id: item.id,
+						question_title: item.question_title,
+						question_body: item.question_body,
+					};
+				});
+				// console.log(allQuestionData);
+				await so_question
+					.increment("total_requests", { by: 1, where: { id: allIDs }, transaction: t, raw: true })
+					.then(() => {
+						res.status(200).send(allQuestionData);
+					})
+					.catch((err) => {
+						res.status(500).send({
+							message: err.message,
+						});
+					});
+			})
+			.catch((err) => {
+				res.status(500).send({
+					message: err.message,
+				});
 			});
-		});
+	}));
 };
-// exports.findOne = (req, res) => {
-// 	const id = req.params.id;
-
-// 	Tutorial.findByPk(id)
-// 		.then((data) => {
-// 			res.send(data);
-// 		})
-// 		.catch((err) => {
-// 			res.status(500).send({
-// 				message: "Error retrieving Tutorial with id=" + id,
-// 			});
-// 		});
-// };
