@@ -1,6 +1,6 @@
 config = {
 	HOST: "localhost",
-	PORT: "1433",
+	PORT: 1433,
 	USER: "outcast",
 	PASSWORD: "",
 	DB: "Difficulty_labeling",
