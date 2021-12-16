@@ -91,7 +91,7 @@ const InputPart = (props) => {
         Data Labeling Portion
       </h2>
       <div style={{ backgroundColor: "#f8f1f4", minHeight: 570 }}>
-        <div style={{ float: "left", width: "50%", minHeight: 570, backgroundColor: "#eadcd9" }}>
+        <div style={{ float: "left", overflowY:"scroll", width: "50%", height: 570, backgroundColor: "#eadcd9" }}>
           <h4 className="d-flex justify-content-center pt-3">Post</h4>
           <p className="d-flex justify-content-center">Post Id:</p>
           <p style={{ paddingLeft: "5%", paddingRight: "3%" }}>
@@ -106,16 +106,7 @@ const InputPart = (props) => {
             self.fname = fname
             <br />
             What should I do to be able to get output of:
-            <br />
-            import json
-            <br />
-            my_file = FileItem('/foo/bar')
-            <br />
-            json.dumps(my_file)
-            <br />
-            TypeError: Object of type 'FileItem' is not JSON serializable
-            <br />
-            Without the error
+           
           </p>
         </div>
 
@@ -168,7 +159,7 @@ const InputPart = (props) => {
                     {difficultywiserule.map(({ item_id, item_title }, index) => {
                       return (
                         <div key={index}>
-                          <input
+                          <input classname="col-md-1"
                             type="checkbox"
                             id={item_id}
                             name={item_title}
@@ -176,7 +167,7 @@ const InputPart = (props) => {
                             checked={checkedRules[item_id]}
                             onChange={() => handleOnChange(item_id)}
                           />
-                          <label htmlFor={`custom-checkbox-${item_id}`}>{item_title}</label>
+                          <label classname="col-md-11" htmlFor={`custom-checkbox-${item_id}`}>{item_title}</label>
                         </div>
                       );
                     })}
