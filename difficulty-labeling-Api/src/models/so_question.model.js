@@ -12,6 +12,14 @@ module.exports = (sequelize, Sequelize) => {
 			question_title: {
 				type: Sequelize.STRING(500),
 			},
+			total_labels: {
+				type: Sequelize.INTEGER,
+				defaultValue: 0,
+			},
+			total_requests: {
+				type: Sequelize.INTEGER,
+				defaultValue: 0,
+			},
 		},
 		{
 			timestamps: false,

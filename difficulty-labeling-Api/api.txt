@@ -1,2 +1,3 @@
 all post         get /api/questions
 insert label     post /api/label
+get N number of question get /api/questions/:N
