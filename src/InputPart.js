@@ -1,10 +1,16 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { fetchQuestions} from "../src/redux/actions/questionAction";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const InputPart = (props) => {
+
+  const dispatch = useDispatch();
+  const { questions, questionsPending } = useSelector((state) => state.question);
 
   const rules=props.rules;
 
@@ -56,11 +62,17 @@ const InputPart = (props) => {
   useEffect(() => {
     console.log(difficulty);
     setcheckedRules(rule_arr.fill(false));
-  }, [difficulty]);
+    console.log(questions)
+  }, [difficulty,rule_arr]);
+
+  // useEffect(() => {
+  //   dispatch(fetchQuestions());
+  //   console.log(questions);
+  // }, []);
 
 
   const save_and_next = () => {
-    if (difficulty != '') {
+    if (difficulty !== '') {
       alert(difficulty + "----" + checkedRules + "\n" + comment)
     } else {
       alert("Please enter a valid Student Id")
@@ -69,7 +81,7 @@ const InputPart = (props) => {
 
 
   const save_and_close = () => {
-    if (difficulty != '') {
+    if (difficulty !== '') {
       let path = "/";
       navigate(path);
     } else {
@@ -90,23 +102,16 @@ const InputPart = (props) => {
       >
         Data Labeling Portion
       </h2>
-      <div style={{ backgroundColor: "#f8f1f4", minHeight: 570 }}>
-        <div style={{ float: "left", overflowY:"scroll", width: "50%", height: 570, backgroundColor: "#eadcd9" }}>
+      <div style={{ backgroundColor: "#f8f1f4", minHeight: 700 }}>
+        <div style={{ float: "left", overflowY:"scroll", width: "50%", height: 700, backgroundColor: "#eadcd9" }}>
           <h4 className="d-flex justify-content-center pt-3">Post</h4>
-          <p className="d-flex justify-content-center">Post Id:</p>
-          <p style={{ paddingLeft: "5%", paddingRight: "3%" }}>
-            How to make a Python class serializable?
-            <br />
-            A simple class:
-            <br />
-            class FileItem:
-            <br />
-            def __init__(self, fname):
-            <br />
-            self.fname = fname
-            <br />
-            What should I do to be able to get output of:
-           
+          <p className="d-flex justify-content-center">Post Id: </p>
+          <p style={{ paddingLeft: "5%", paddingRight: "3%" }}> 
+            
+
+
+ 
+
           </p>
         </div>
 
@@ -116,7 +121,8 @@ const InputPart = (props) => {
             <div className="d-flex justify-content-center pt-3 w-100">
             {rules.map(({ id, title }, index) => {
               return (
-              <label className="px-3">
+              <>
+              <label key={index} className="px-3">
                 <input
                   type="radio"
                   value={title}
@@ -125,28 +131,10 @@ const InputPart = (props) => {
                 />
                 <span>{title}</span>
               </label>
+              </>
               );
             })}
 
-              {/* <label className="px-3">
-                <input
-                  type="radio"
-                  value="Intermediate"
-                  checked={difficulty === "Intermediate"}
-                  onChange={handleChange}
-                />
-                <span>Intermediate</span>
-              </label>
-
-              <label className="px-3">
-                <input
-                  type="radio"
-                  value="Advance"
-                  checked={difficulty === "Advance"}
-                  onChange={handleChange}
-                />
-                <span>Advance</span>
-              </label> */}
             </div>
             <div>
 
@@ -158,8 +146,8 @@ const InputPart = (props) => {
                   <ul>
                     {difficultywiserule.map(({ item_id, item_title }, index) => {
                       return (
-                        <div key={index}>
-                          <input classname="col-md-1"
+                        <div className="card card-body " key={index}>
+                          <input className="col-md-1" 
                             type="checkbox"
                             id={item_id}
                             name={item_title}
@@ -167,7 +155,7 @@ const InputPart = (props) => {
                             checked={checkedRules[item_id]}
                             onChange={() => handleOnChange(item_id)}
                           />
-                          <label classname="col-md-11" htmlFor={`custom-checkbox-${item_id}`}>{item_title}</label>
+                          <label className="col-md-11" htmlFor={`custom-checkbox-${item_id}`}>{item_title}</label>
                         </div>
                       );
                     })}
@@ -175,7 +163,7 @@ const InputPart = (props) => {
                 )}
               </div>
             </div>
-            <form className="d-flex justify-content-center pt-3 w-100">
+            <div className="d-flex justify-content-center pt-3 w-100">
               <textarea
                 value={comment}
                 rows="3"
@@ -183,23 +171,23 @@ const InputPart = (props) => {
                 style={{ width: "90%" }}
                 onChange={e => setComment(e.target.value)}
               />
-            </form>
+            </div>
           </Form>
         </div>
 
       </div>
-      <div className="d-flex justify-content-center pb-5 w-100">
+      <div className="d-flex justify-content-center pt-3 pb-5 w-100">
 
         <div className="d-flex justify-content-center p-2"
-          style={{ backgroundColor: "#f8f1f4", width: "33.33%" }}
-        > <button type="button" class="btn btn-outline-warning waves-effect w-50" >Previous</button>
+          style={{ width: "33.33%" }}
+        > <button type="button" className="btn btn-warning waves-effect w-50" >Previous</button>
         </div>
         <div className="d-flex justify-content-center p-2"
-          style={{ backgroundColor: "#ece6dd", width: "33.33%" }}
-        > <button type="button" class="btn btn-outline-warning waves-effect w-50" onClick={save_and_next}>Save and Next</button></div>
+          style={{ width: "33.33%" }}
+        > <button type="button" className="btn btn-warning waves-effect w-50" onClick={save_and_next}>Save and Next</button></div>
         <div className="d-flex justify-content-center p-2"
-          style={{ backgroundColor: "#eadcd9", width: "33.33%" }}
-        > <button type="button" class="btn btn-outline-info waves-effect w-50" onClick={save_and_close}>Save and Close</button></div>
+          style={{ width: "33.33%" }}
+        > <button type="button" className="btn btn-info waves-effect w-50" onClick={save_and_close}>Save and Close</button></div>
 
       </div>
     </div>
