@@ -1,8 +1,7 @@
 import React from "react";
 
 const Rules = (props) => {
-
-  const rules=props.rules;
+  const rules = props.rules;
 
   return (
     <div className="w-100">
@@ -13,7 +12,7 @@ const Rules = (props) => {
           alignItems: "center",
           textDecorationLine: "underline",
           marginTop: "3%",
-          marginBottom:"3%",
+          marginBottom: "3%",
         }}
       >
         Rules for reading
@@ -26,7 +25,7 @@ const Rules = (props) => {
               return (
           <p key={index} style={{ paddingLeft: "5%", paddingRight: "5%" }}>{item_id+1}. {item_title}</p>
             );
-            })}
+          })}
         </div>
 
         <div style={{ float: "left", width: "33%", minHeight:500, backgroundColor: "#d6fadf" }}>
@@ -35,7 +34,7 @@ const Rules = (props) => {
               return (
           <p key={index} style={{ paddingLeft: "5%", paddingRight: "5%" }}>{item_id+1}. {item_title}</p>
             );
-            })}
+          })}
         </div>
 
         <div style={{ float: "left", width: "33%",minHeight:500, backgroundColor: "#91c9d6" }}>
@@ -44,7 +43,7 @@ const Rules = (props) => {
               return (
           <p key={index} style={{ paddingLeft: "5%", paddingRight: "5%" }}>{item_id+1}. {item_title}</p>
             );
-            })}
+          })}
         </div>
       </div>
     </div>
