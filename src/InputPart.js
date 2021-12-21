@@ -18,7 +18,7 @@ const InputPart = (props) => {
   const questions = state.questions; 
   const questionsPending = state.questionsPending;
 
-  const[questionindex, setQuestionindex] = useState
+  const[questionindex, setQuestionindex] = useState(0);
   
 
   //handling the collapsible div
@@ -88,6 +88,9 @@ const InputPart = (props) => {
 
   const save_and_next = () => {
     if (difficulty !== '') {
+      const currentIndex = questions.indexOf(questions[questionindex]);
+      const nextIndex = (currentIndex + 1) % questions.length;
+      setQuestionindex(nextIndex)
       alert(difficulty + "----" + checkedRules + "\n" + comment)
     } else {
       alert("Please enter a valid Student Id")
@@ -128,17 +131,19 @@ const InputPart = (props) => {
         Data Labeling Portion
       </h2>
       <div style={{ backgroundColor: "#f8f1f4", minHeight: 700 }}>
+
+
+
         <div style={{ float: "left", overflowY:"scroll", width: "50%", height: 700, backgroundColor: "#eadcd9" }}>
           <h4 className="d-flex justify-content-center pt-3">Post</h4>
-          <p className="d-flex justify-content-center">Post Id: </p>
-          <p style={{ paddingLeft: "5%", paddingRight: "3%" }}> 
-            
-
-
- 
-
+          <p className="d-flex justify-content-center">Post Id: {questions[questionindex].id}</p>
+          <p className="d-flex px-3">Post Title: {questions[questionindex].question_title}</p>
+          <p className="d-flex px-3"> 
+          {questions[questionindex].question_body}
           </p>
         </div>
+
+
 
         <div style={{ float: "right", width: "50%" }}>
           <h4 className="d-flex justify-content-center pt-3">Select Difficulty label</h4>
