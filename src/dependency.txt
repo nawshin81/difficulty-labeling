@@ -5,3 +5,5 @@ npm install axios react-redux redux redux-thunk redux-devtools-extension
 npm install cors
 
 taskkill /f /im node.exe
+
+npm i react-highlight
