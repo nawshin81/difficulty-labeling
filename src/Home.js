@@ -1,17 +1,28 @@
 import React from "react";
-import { useState} from "react";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchQuestions} from "../src/redux/actions/questionAction";
 import logo from "./IUT.png";
 
 const Home = () => {
   const [input, setInput] = useState('');
+
+
+  const dispatch = useDispatch();
+  const { questions, questionsPending } = useSelector((state) => state.question);
+  useEffect(() => {
+    dispatch(fetchQuestions());
+    console.log(questions);
+  }, questionsPending);
+
   
   const navigate = useNavigate();
 
   const routeChange = () => {
     if(input.length===9){
       let path = "/labelpage";
-      navigate(path);
+      navigate(path, { state: { questions, questionsPending } });
     }else{
       alert("Please enter a valid Student Id")
     } 

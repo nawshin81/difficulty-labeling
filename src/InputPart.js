@@ -4,26 +4,45 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { fetchQuestions} from "../src/redux/actions/questionAction";
 import { Form } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const InputPart = (props) => {
 
   const dispatch = useDispatch();
-  const { questions, questionsPending } = useSelector((state) => state.question);
+  const navigate = useNavigate();
+  const {state} = useLocation();
 
+
+  //questons are taken from previous page and filter the first one that satisfy the condition
+  const questions = state.questions; 
+  const questionsPending = state.questionsPending;
+
+  const[questionindex, setQuestionindex] = useState
+  
+
+  //handling the collapsible div
+  const [collapse, setCollapse] = useState(true);
+
+
+  //taking the comment
+  const [comment, setComment] = useState('');
+
+
+  //difficulty keeps track of selected difficulty level 
+  //difficultywise rule is changed based on defficulty level
+  //rule_arr keeps track of selected rules of a level
   const rules=props.rules;
 
-  const navigate = useNavigate();
+  const [difficulty, setDifficulty] = useState();
 
-  const [collapse, setCollapse] = useState(true);
   const [difficultywiserule, setDifficultywiserule]= useState({});
+
   const [rule_arr, setRules_arr] = useState([]);
 
 
 
-  const [difficulty, setDifficulty] = useState();
-
+  //handle the difficulty wise rules based on difficulty level
   const handleChange = (e) => {
     const target = e.target;
     if (target.checked) {
@@ -43,7 +62,7 @@ const InputPart = (props) => {
   };
 
 
-
+  //handle which rules are checked from check boxs  
   const [checkedRules, setcheckedRules] = useState(rule_arr.fill(false));
 
   const handleOnChange = (position) => {
@@ -55,21 +74,17 @@ const InputPart = (props) => {
   };
 
 
-
-  const [comment, setComment] = useState('');
-
-
+  //nullify the checked rules when the difficulty level is changed
   useEffect(() => {
     console.log(difficulty);
     setcheckedRules(rule_arr.fill(false));
-    console.log(questions)
+    console.log(questions);
   }, [difficulty,rule_arr]);
 
-  // useEffect(() => {
-  //   dispatch(fetchQuestions());
-  //   console.log(questions);
-  // }, []);
 
+
+
+  //save_and_next function and go to next question
 
   const save_and_next = () => {
     if (difficulty !== '') {
@@ -79,6 +94,14 @@ const InputPart = (props) => {
     }
   }
 
+  useEffect(() => {
+    dispatch(fetchQuestions());
+  }, questionsPending);
+
+
+
+
+  //save_and_close function
 
   const save_and_close = () => {
     if (difficulty !== '') {
@@ -88,6 +111,8 @@ const InputPart = (props) => {
       alert("Please enter a valid Student Id")
     }
   }
+
+
 
   return (
     <div className="w-100 ">
